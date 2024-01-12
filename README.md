@@ -1,8 +1,9 @@
 # Weather Dashboard
 
 ## Live Link
-
+https://db-doo.github.io/five-day-weather/
 ## Screenshot
+<img src="./assets/screenshot.png"/>
 
 ## Description
 A simple and interactive weather dashboard that allows users to search for weather forecasts in different cities. This application fetches data from the OpenWeatherMap API and displays current weather conditions along with a 5-day forecast.
