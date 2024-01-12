@@ -1,0 +1,43 @@
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #1E213A;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+#search-section {
+    background-color: #100E1D;
+    padding: 20px;
+}
+
+#search-history button {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    background-color: #1E213A;
+    color: white;
+    border: none;
+}
+
+#current-weather, #forecast {
+    padding: 20px;
+    background-color: #A09FB1;
+}
+
+#forecast-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.forecast-card {
+    background-color: #88869D;
+    padding: 10px;
+    margin: 10px;
+}
