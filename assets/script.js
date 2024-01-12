@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // load any existing search history/ Create this function
+    loadSearchHistory()
 
 });
 
@@ -88,12 +88,19 @@ function updateForecast(forecastData) {
     var forecastContainer = document.getElementById('forecast-container');
     forecastContainer.innerHTML = ''; // Clear any existing forecast cards
 
-    // returns a 3-hourly forecast, so filter out the daily forecasts at noon
+    // Filter out the daily forecasts at noon, Convert the forecast timestamp to a Date object, Check if the time is 12 PM
     var dailyForecasts = forecastData.filter(f => new Date(f.dt_txt).getHours() === 12);
 
-    dailyForecasts.forEach(forecast => {
+    // Start loop from the second item (index 1) in the filtered array to skip today's forecast
+    // Loop through the next 5 items (or until the end of the array)
+    for (let i = 1; i < dailyForecasts.length && i < 6; i++) {
+        // Get the forecast data for the current item in the loop
+        var forecast = dailyForecasts[i];
+         // Create a new 'div' element for the forecast card
         var card = document.createElement('div');
+        // Format the date from the forecast data so its readable
         var date = new Date(forecast.dt_txt).toLocaleDateString();
+        // Set the inner HTML of the card with forecast details
         card.innerHTML = `
             <h4>${date}</h4>
             <p>Temp: ${forecast.main.temp}°F</p>
@@ -102,7 +109,7 @@ function updateForecast(forecastData) {
         `;
         card.classList.add('forecast-card'); // Add class from CSS to style 
         forecastContainer.appendChild(card);
-    });
+    }
 }
 
 // Function to add a city to the search history:
@@ -162,11 +169,3 @@ function updateSearchHistoryDisplay(history) {
     });
 }
 
-// Function to load and display the search history from localStorage:
-//   - Retrieve the history array from localStorage
-//   - If there's no history, initialize an empty array
-//   - Call the function to update the search history display
-
-// When a city in the search history is clicked:
-//   - Retrieve the city name from the button
-//   - Call the function to get coordinates for the city (this will also fetch and display the weather)
