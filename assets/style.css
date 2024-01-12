@@ -12,9 +12,19 @@ header {
     text-align: center;
 }
 
+.main-container {
+    display: flex;
+}
+
 #search-section {
     background-color: #100E1D;
     padding: 20px;
+    flex: 1;
+}
+
+#weather-container {
+    flex: 2;
+
 }
 
 #search-history button {
@@ -41,3 +51,4 @@ header {
     padding: 10px;
     margin: 10px;
 }
+

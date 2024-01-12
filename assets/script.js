@@ -179,13 +179,32 @@ function updateSearchHistoryDisplay(history) {
 
     // create a button for each city in the history and append to the container
     history.forEach(function(city) {
+        var historyEntry = document.createElement('div');
+        historyEntry.classList.add('history-entry');
+
         var button = document.createElement('button');
         button.textContent = city;
         button.classList.add('history-btn'); // Aadd CSS class for styling
         button.addEventListener('click', function() {
             searchCity(city); // Re-fetch weather when clicked
         });
-        searchHistoryContainer.appendChild(button);
+
+        var deleteButton = document.createElement('button');
+        deleteButton.textContent = 'X';
+        deleteButton.classList.add('delete-btn');
+        deleteButton.addEventListener('click', function() {
+            deleteCityFromHistory(city);
+        });
+
+        historyEntry.appendChild(button);
+        historyEntry.appendChild(deleteButton);
+        searchHistoryContainer.appendChild(historyEntry);
     });
 }
 
+function deleteCityFromHistory(cityName) {
+    let history = JSON.parse(localStorage.getItem('weatherSearchHistory')) || [];
+    history = history.filter(city => city.toLowerCase() !== cityName.toLowerCase());
+    localStorage.setItem('weatherSearchHistory', JSON.stringify(history));
+    updateSearchHistoryDisplay(history);
+}
