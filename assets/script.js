@@ -40,6 +40,7 @@ function searchCity(cityName) {
                 // For now, let's log them to the console
                 console.log(`Coordinates for ${cityName}: ${lat}, ${lon}`);
                 getWeather(lat, lon);
+                addToSearchHistory(cityName);
             } else {
                 alert('City not found, please try again.');
             }
@@ -104,15 +105,40 @@ function updateForecast(forecastData) {
     });
 }
 
-// Function to create forecast cards:
-//   - For each day of the forecast:
-//     - Create a card element with the date, weather icon, temperature, wind speed, and humidity
-//     - Append the card to the forecast container
-
 // Function to add a city to the search history:
 //   - Add the city to the history array
 //   - Save the updated array to localStorage
 //   - Call the function to update the search history display
+function addToSearchHistory(cityName) {
+    let history = JSON.parse(localStorage.getItem('weatherSearchHistory')) || [];
+    // if the city is already in the history, remove it
+    history = history.filter(city => city.toLowerCase() !== cityName.toLowerCase());
+    // adds the new city to the front of the history array
+    history.unshift(cityName);
+    // saves the new history back to localStorage
+    localStorage.setItem('weatherSearchHistory', JSON.stringify(history));
+    // Update the search history display
+    updateSearchHistoryDisplay(history);
+}
+
+
+// Function to load and display the search history from localStorage:
+//   - Retrieve the history array from localStorage
+//   - If there's no history, initialize an empty array
+//   - Call the function to update the search history display
+function loadSearchHistory() {
+    // Attempt to retrieve the search history from localStorage
+    var history = localStorage.getItem('weatherSearchHistory');
+    
+    // If there is a history parse it and display it
+    if (history) {
+        history = JSON.parse(history);
+        updateSearchHistoryDisplay(history);
+    } else {
+        // If not, initialize an empty array for the history
+        localStorage.setItem('weatherSearchHistory', JSON.stringify([]));
+    }
+}
 
 // Function to update the search history display:
 //   - Clear the current history display
@@ -120,6 +146,21 @@ function updateForecast(forecastData) {
 //     - Create a button with the city name
 //     - Set up an event listener on the button to re-fetch the weather when clicked
 //     - Append the button to the search history container
+function updateSearchHistoryDisplay(history) {
+    var searchHistoryContainer = document.getElementById('search-history');
+    searchHistoryContainer.innerHTML = ''; // clear any existing content
+
+    // create a button for each city in the history and append to the container
+    history.forEach(function(city) {
+        var button = document.createElement('button');
+        button.textContent = city;
+        button.classList.add('history-btn'); // Aadd CSS class for styling
+        button.addEventListener('click', function() {
+            searchCity(city); // Re-fetch weather when clicked
+        });
+        searchHistoryContainer.appendChild(button);
+    });
+}
 
 // Function to load and display the search history from localStorage:
 //   - Retrieve the history array from localStorage
