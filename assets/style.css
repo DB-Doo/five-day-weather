@@ -59,31 +59,34 @@ header {
     margin-bottom: 5px;
 }
 
-.delete-btn {
-
-}
-
+/* Styles for screens wider than 600px */
 @media (min-width: 600px) {
     .main-container {
-        display: flex;
-        display: block;
+        display: flex; 
     }
-    #search-section {
-        flex: 1;
-    }
-    #weather-container {
-        flex: 2;
-    }
+    
     #forecast-container {
         display: flex;
-        justify-content: space-around;
     }
-    #forecast-container {
-        display: block;
-    }
+
     .forecast-card {
-        width: auto;
+        width: auto; 
+        margin: 10px;
+    }
+}
+
+/* Styles for screens narrower than 600px */
+@media (max-width: 599px) {
+    .main-container {
+        display: block; 
+    }
+
+    #forecast-container {
+        display: block; 
+    }
+
+    .forecast-card {
+        width: 100%; 
         margin: 10px auto; 
     }
 }
-
