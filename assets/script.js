@@ -76,38 +76,58 @@ function updateCurrentWeather(currentWeather, city) {
     // Format the date from the weather data
     var date = new Date(currentWeather.dt_txt).toLocaleDateString();
 
+    // Get the icon code from the current weather data
+    var iconCode = currentWeather.weather[0].icon;
+    // Construct the URL for the weather icon
+    var iconUrl = `http://openweathermap.org/img/wn/${iconCode}.png`;
+
     // Update the Current Weather section with new data
     document.getElementById('city-name').textContent = `${city.name} (${date})`;
     document.getElementById('temperature').textContent = `Temp: ${currentWeather.main.temp}°F`;
     document.getElementById('wind').textContent = `Wind: ${currentWeather.wind.speed} MPH`;
     document.getElementById('humidity').textContent = `Humidity: ${currentWeather.main.humidity}%`;
+
+    // Create an img element for the icon and set its src attribute
+    var iconImg = document.createElement('img');
+    iconImg.src = iconUrl;
+    // Optionally, add alt text for accessibility
+    iconImg.alt = currentWeather.weather[0].description;
+
+    // Append the icon to the weather container or replace the existing icon
+    var weatherContainer = document.getElementById('current-weather');
+    var existingIcon = weatherContainer.querySelector('img');
+    if (existingIcon) {
+        weatherContainer.replaceChild(iconImg, existingIcon);
+    } else {
+        weatherContainer.appendChild(iconImg);
+    }
 }
 
 
 function updateForecast(forecastData) {
     var forecastContainer = document.getElementById('forecast-container');
-    forecastContainer.innerHTML = ''; // Clear any existing forecast cards
+    forecastContainer.innerHTML = '';
 
-    // Filter out the daily forecasts at noon, Convert the forecast timestamp to a Date object, Check if the time is 12 PM
     var dailyForecasts = forecastData.filter(f => new Date(f.dt_txt).getHours() === 12);
 
-    // Start loop from the second item (index 1) in the filtered array to skip today's forecast
-    // Loop through the next 5 items (or until the end of the array)
     for (let i = 1; i < dailyForecasts.length && i < 6; i++) {
-        // Get the forecast data for the current item in the loop
         var forecast = dailyForecasts[i];
-         // Create a new 'div' element for the forecast card
-        var card = document.createElement('div');
-        // Format the date from the forecast data so its readable
         var date = new Date(forecast.dt_txt).toLocaleDateString();
-        // Set the inner HTML of the card with forecast details
+
+        var iconCode = forecast.weather[0].icon;
+        var iconUrl = `http://openweathermap.org/img/wn/${iconCode}.png`;
+
+        var card = document.createElement('div');
+        card.classList.add('forecast-card');
+
         card.innerHTML = `
             <h4>${date}</h4>
+            <img src="${iconUrl}" alt="${forecast.weather[0].description}">
             <p>Temp: ${forecast.main.temp}°F</p>
             <p>Wind: ${forecast.wind.speed} MPH</p>
             <p>Humidity: ${forecast.main.humidity}%</p>
         `;
-        card.classList.add('forecast-card'); // Add class from CSS to style 
+
         forecastContainer.appendChild(card);
     }
 }
