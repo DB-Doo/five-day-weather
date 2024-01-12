@@ -81,17 +81,28 @@ function updateCurrentWeather(currentWeather, city) {
     document.getElementById('wind').textContent = `Wind: ${currentWeather.wind.speed} MPH`;
     document.getElementById('humidity').textContent = `Humidity: ${currentWeather.main.humidity}%`;
 }
-function updateForecast() {
-    
+
+
+function updateForecast(forecastData) {
+    var forecastContainer = document.getElementById('forecast-container');
+    forecastContainer.innerHTML = ''; // Clear any existing forecast cards
+
+    // returns a 3-hourly forecast, so filter out the daily forecasts at noon
+    var dailyForecasts = forecastData.filter(f => new Date(f.dt_txt).getHours() === 12);
+
+    dailyForecasts.forEach(forecast => {
+        var card = document.createElement('div');
+        var date = new Date(forecast.dt_txt).toLocaleDateString();
+        card.innerHTML = `
+            <h4>${date}</h4>
+            <p>Temp: ${forecast.main.temp}°F</p>
+            <p>Wind: ${forecast.wind.speed} MPH</p>
+            <p>Humidity: ${forecast.main.humidity}%</p>
+        `;
+        card.classList.add('forecast-card'); // Add class from CSS to style 
+        forecastContainer.appendChild(card);
+    });
 }
-// Function to get current and forecast weather data:
-//   - Make an API call to the OpenWeatherMap 5 Day Forecast API with the coordinates
-//   - If the API call is successful:
-//     - Retrieve the current weather data and the 5-day forecast from the response
-//     - Update the Current Weather section with the new data
-//     - Clear the forecast section and create new forecast cards for the 5-day forecast
-//     - Append the forecast cards to the forecast section
-//   - If the API call fails, display an error message
 
 // Function to create forecast cards:
 //   - For each day of the forecast:
