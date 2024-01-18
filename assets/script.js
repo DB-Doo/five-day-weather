@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function searchCity(cityName) {
     // Use the Geocoding API to get the latitude and longitude for the city
-    var weatherUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(cityName)}&limit=1&appid=f6ed25ba170f992f6686c972ac15ffaa`;
+    var weatherUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(cityName)}&limit=1&appid=f6ed25ba170f992f6686c972ac15ffaa`;
 
     fetch(weatherUrl)
         .then(response => {
